@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function WebSocketComponent() {
+export function WebSocketComponent() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -33,5 +33,3 @@ function WebSocketComponent() {
     </div>
   );
 }
-
-export default WebSocketComponent;

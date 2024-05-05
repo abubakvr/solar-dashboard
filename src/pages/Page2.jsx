@@ -1,7 +1,8 @@
 import React from "react";
+import { WebSocketComponent } from "../components/WebSocketComponent";
 
 const Page2 = () => {
-  return <div>Page2</div>;
+  return <WebSocketComponent />;
 };
 
 export default Page2;
