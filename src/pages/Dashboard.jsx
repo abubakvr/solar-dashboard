@@ -12,11 +12,10 @@ const Dashboard = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080");
+    const socket = new WebSocket("wss://esp-node-server.onrender.com");
 
     socket.onopen = () => {
       console.log("WebSocket connected");
-      socket.send("Connected to frontend");
     };
 
     socket.onmessage = (event) => {
