@@ -13,6 +13,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const socket = new WebSocket("wss://esp-node-server.onrender.com");
+    let messageTimer;
 
     socket.onopen = () => {
       console.log("WebSocket connected");
@@ -22,6 +23,13 @@ const Dashboard = () => {
     socket.onmessage = (event) => {
       const receivedMessage = event.data;
       setMessage(JSON.parse(receivedMessage));
+
+      // Reset the timer when a message is received
+      clearTimeout(messageTimer);
+      messageTimer = setTimeout(() => {
+        // Handle timeout event here
+        setMessage("");
+      }, 5000); // 5 seconds
     };
 
     socket.onclose = () => {
@@ -29,7 +37,14 @@ const Dashboard = () => {
       setIsSocketConnected(false);
     };
 
+    // Set up initial timer
+    messageTimer = setTimeout(() => {
+      // Handle timeout event here
+      setMessage("");
+    }, 5000); // 5 seconds
+
     return () => {
+      clearTimeout(messageTimer); // Clear the timer on cleanup
       socket.close();
     };
   }, []);

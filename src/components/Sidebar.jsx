@@ -5,12 +5,6 @@ import DashboardIcon from "../assets/dashboard-icon.svg";
 import DashboardIconActive from "../assets/dashboard-active.svg";
 import PowerIcon from "../assets/power-icon.svg";
 import PowerIconActive from "../assets/power-active.svg";
-import SolarIcon from "../assets/solar-icon.svg";
-import SolarIconActive from "../assets/solar-active.svg";
-import WindIcon from "../assets/wind-icon.svg";
-import WindIconActive from "../assets/wind-active.svg";
-import BatteryIcon from "../assets/battery-icon.svg";
-import BatteryIconActive from "../assets/battery-active.svg";
 
 const appLinks = [
   {
