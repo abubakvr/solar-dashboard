@@ -8,7 +8,6 @@ import { ToggleButton } from "../components/ToggleButton";
 
 const Dashboard = () => {
   const [isActive, setIsActive] = useState();
-
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -20,7 +19,6 @@ const Dashboard = () => {
 
     socket.onmessage = (event) => {
       const receivedMessage = event.data;
-      console.log("Received message from server:", receivedMessage);
       setMessage(JSON.parse(receivedMessage));
     };
 
@@ -48,9 +46,9 @@ const Dashboard = () => {
               </div>
               <div className="flex  flex-col items-end">
                 <div className="text-2xl font-bold">Battery</div>
-                <div className="text-sm mt-1">Current battery level(W)</div>
+                <div className="text-sm mt-1">Current battery level(V)</div>
                 <div className="text-5xl font-bold mt-5">
-                  {message ? message.batteryVoltage.toFixed(2) : 0}W
+                  {message ? message.batteryVoltage.toFixed(2) : 0}V
                 </div>
               </div>
             </div>
@@ -60,9 +58,9 @@ const Dashboard = () => {
               </div>
               <div className="flex  flex-col items-end">
                 <div className="text-2xl font-bold">Panels</div>
-                <div className="text-sm mt-1">Current panel output(W)</div>
+                <div className="text-sm mt-1">Current panel output(V)</div>
                 <div className="text-5xl font-bold mt-5">
-                  {message ? message.panelVoltage.toFixed(2) : 0}W
+                  {message ? message.panelVoltage.toFixed(2) : 0}V
                 </div>
               </div>
             </div>

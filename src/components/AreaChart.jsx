@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import {
   Area,
   AreaChart,
@@ -8,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { createTimestamps, findNearestIndex } from "../utils/helpers";
 
 const data = [
   {
@@ -85,10 +87,46 @@ const data = [
 ];
 
 const AreaCharts = () => {
+  const graphTimes = createTimestamps(0.0061, 15);
+  const [chartData, setChartData] = useState();
+  useEffect(() => {
+    const getGraphData = async () => {
+      try {
+        const response = await fetch(
+          "https://esp-node-server.onrender.com/latest-data"
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const events = await response.json();
+        const eventTimestamps = events
+          .reverse()
+          .map((item) => Math.floor(item.timestamp / 1000));
+
+        const eventsToGraph = graphTimes.map((timestamp) => {
+          const index = findNearestIndex(eventTimestamps, timestamp);
+          const event = index !== -1 ? events[index] : null;
+
+          return event ? { ...event, timePoint: timestamp } : null;
+        });
+
+        console.log(graphTimes);
+        setChartData(eventsToGraph);
+      } catch (error) {
+        console.error("Error fetching or processing data:", error);
+        throw error;
+      }
+    };
+
+    getGraphData();
+  }, []);
+
   return (
     <div className="w-full" style={{ height: "330px" }}>
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ left: -15, top: 0, bottom: 0 }}>
+        <AreaChart data={chartData} margin={{ left: -15, top: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
@@ -127,17 +165,17 @@ const AreaCharts = () => {
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="uv"
-            stroke="#8884d8"
-            fillOpacity={1}
-            fill="url(#colorUv)"
-          />
-          <Area
-            type="monotone"
-            dataKey="pv"
+            dataKey="panelVoltage"
             stroke="#82ca9d"
             fillOpacity={1}
             fill="url(#colorPv)"
+          />
+          <Area
+            type="monotone"
+            dataKey="batteryVoltage"
+            stroke="#8884d8"
+            fillOpacity={1}
+            fill="url(#colorUv)"
           />
         </AreaChart>
       </ResponsiveContainer>

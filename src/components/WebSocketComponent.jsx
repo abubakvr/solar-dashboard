@@ -13,7 +13,6 @@ export function WebSocketComponent() {
 
     socket.onmessage = (event) => {
       const receivedMessage = event.data;
-      console.log("Received message from server:", receivedMessage);
       setMessage(receivedMessage);
     };
 
