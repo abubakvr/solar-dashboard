@@ -70,7 +70,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-      <div className="flex-1 bg-pale-blue md:ml-60 lg:ml-72 h-max">
+      <div className="flex-1 bg-pale-blue md:ml-60 h-max">
         <Outlet />
       </div>
     </div>
