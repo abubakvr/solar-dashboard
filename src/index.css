@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.tooltip-bg {
+    position: relative;
+    background: linear-gradient(
+        104deg,
+        rgba(39, 59, 79, 0.6) 18.94%,
+        rgba(39, 59, 79, 0.6) 94.84%
+      );}
+  

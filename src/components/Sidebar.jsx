@@ -20,28 +20,10 @@ const appLinks = [
     activeLogo: DashboardIconActive,
   },
   {
-    name: "Consumption",
-    url: "/consumption",
-    logo: WindIcon,
-    activeLogo: WindIconActive,
-  },
-  {
-    name: "Energy",
-    url: "/energy",
+    name: "Analytics",
+    url: "/analytics",
     logo: PowerIcon,
     activeLogo: PowerIconActive,
-  },
-  {
-    name: "Panels",
-    url: "/panels",
-    logo: SolarIcon,
-    activeLogo: SolarIconActive,
-  },
-  {
-    name: "Battery",
-    url: "/battery",
-    logo: BatteryIcon,
-    activeLogo: BatteryIconActive,
   },
 ];
 
@@ -49,7 +31,7 @@ const Sidebar = () => {
   const location = useLocation();
   return (
     <div className="flex h-screen">
-      <div className="bg-indigo text-white h-screen w-1/6 py-4 fixed top-0">
+      <div className="hidden md:flex flex-col bg-indigo text-white h-screen w-1/6 py-4 fixed top-0">
         <div className="flex gap-2 items-center mt-5 px-4">
           <img src={Logo} className="w-6" />
           <h1 className="text-xl font-bold">Egauge</h1>
@@ -88,7 +70,7 @@ const Sidebar = () => {
           </ul>
         </div>
       </div>
-      <div className="flex-1 bg-pale-blue ml-60 h-max">
+      <div className="flex-1 bg-pale-blue md:ml-60 lg:ml-72 h-max">
         <Outlet />
       </div>
     </div>

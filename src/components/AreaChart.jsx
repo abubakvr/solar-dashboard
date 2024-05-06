@@ -11,80 +11,49 @@ import {
 } from "recharts";
 import { createTimestamps, findNearestIndex } from "../utils/helpers";
 
-const data = [
-  {
-    name: "Jan",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Feb",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Mar",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Apr",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "May",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Jun",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Jul",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-  {
-    name: "Aug",
-    uv: 4000,
-    pv: 4500,
-    amt: 2400,
-  },
-  {
-    name: "Sep",
-    uv: 3000,
-    pv: 5000,
-    amt: 2210,
-  },
-  {
-    name: "Oct",
-    uv: 2000,
-    pv: 6800,
-    amt: 2290,
-  },
-  {
-    name: "Nov",
-    uv: 2780,
-    pv: 6308,
-    amt: 2000,
-  },
-  {
-    name: "Dec",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-];
+const CustomTooltip = (props) => {
+  const dataPoint = props?.payload?.[0];
+
+  const formattedDate = () => {
+    if (dataPoint) {
+      const date = new Date(dataPoint?.payload?.timePoint * 1000);
+      const monthName = date.toLocaleString("en-US", { month: "short" });
+      const time = date.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: false,
+      });
+      return `${monthName} ${date.getDate()}, ${time}`;
+    }
+    return "";
+  };
+
+  return (
+    <div
+      data-testid="custom-tooltip"
+      className="tooltip-bg rounded-lg p-4 pb-2 auto text-lg"
+    >
+      <div className="text-[#fff] pb-3 font-bold">
+        {formattedDate && <div>{formattedDate()}</div>}
+      </div>
+      <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-2 mb-2 font-bold">
+        <div className="text-[#fff] col-span-2">Temperature:</div>
+        <div className="text-[#fff] col-span-1">
+          {dataPoint?.payload.temperature}
+        </div>
+        <div className="text-[#fff] col-span-2">Panel:</div>
+        <div className="text-[#fff] col-span-1">
+          {dataPoint?.payload.panelVoltage}
+        </div>
+
+        <div className="text-[#fff] col-span-2 ">Battery:</div>
+        <div className="text-[#fff] col-span-1">
+          {dataPoint?.payload.batteryVoltage}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const AreaCharts = () => {
   const graphTimes = createTimestamps(0.0061, 15);
@@ -124,9 +93,13 @@ const AreaCharts = () => {
   }, []);
 
   return (
-    <div className="w-full" style={{ height: "330px" }}>
+    <div className="w-full h-[200px] md:h-[330px] overflow-x-hidden">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={chartData} margin={{ left: -15, top: 0, bottom: 0 }}>
+        <AreaChart
+          data={chartData}
+          className="-ml-[10px] md:-ml-[15px]"
+          margin={{ top: 0, bottom: 0 }}
+        >
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
@@ -138,7 +111,11 @@ const AreaCharts = () => {
             </linearGradient>
           </defs>
           <XAxis
-            dataKey="name"
+            dataKey="timePoint"
+            tickFormatter={(data) => {
+              const date = new Date(data * 1000);
+              return `${date.getHours()} : ${date.getMinutes()}`;
+            }}
             tick={{
               fontSize: 12,
               fill: "#080817",
@@ -147,7 +124,7 @@ const AreaCharts = () => {
           />
           <YAxis
             tickFormatter={(data) => {
-              return `${data / 1000}kW`;
+              return `${data}v`;
             }}
             tickLine={false}
             axisLine={false}
@@ -162,7 +139,10 @@ const AreaCharts = () => {
             vertical={false}
             strokeWidth={0.4}
           />
-          <Tooltip />
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ fill: "transparent" }}
+          />
           <Area
             type="monotone"
             dataKey="panelVoltage"

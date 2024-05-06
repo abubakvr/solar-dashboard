@@ -23,22 +23,7 @@ export const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        path: "/consumption",
-        element: <Page2 />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: "/energy",
-        element: <Page2 />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: "/battery",
-        element: <Page2 />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: "/panels",
+        path: "/analytics",
         element: <Page2 />,
         errorElement: <ErrorPage />,
       },
