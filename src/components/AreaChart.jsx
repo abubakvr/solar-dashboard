@@ -58,6 +58,7 @@ const CustomTooltip = (props) => {
 const AreaCharts = () => {
   const graphTimes = createTimestamps(0.0061, 15);
   const [chartData, setChartData] = useState();
+
   useEffect(() => {
     const getGraphData = async () => {
       try {
@@ -90,6 +91,14 @@ const AreaCharts = () => {
     };
 
     getGraphData();
+
+    let messageTimer = setTimeout(() => {
+      getGraphData();
+    }, 5000);
+
+    return () => {
+      clearTimeout(messageTimer);
+    };
   }, []);
 
   return (
